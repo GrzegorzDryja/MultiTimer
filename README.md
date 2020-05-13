@@ -1,0 +1,3 @@
+# Encryptor
+
+Author: Grzegorz Dryja
