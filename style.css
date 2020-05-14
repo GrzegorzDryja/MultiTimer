@@ -2,13 +2,13 @@
     Author: Grzegorz Dryja
 */
 
-.box
+.timer
 {
     background-color: #4ce600;
-    
+    width: 600px;
     height: 20px;
     padding: 10px;
-    position: fixed;
+    position: ; /* Was fixed but this cover first one*/
     top: 50px; /* bottom */
     right: 15px;
 }
@@ -20,6 +20,6 @@
 }
 .button
 {
-    
+    width: 50px;
 }
 
