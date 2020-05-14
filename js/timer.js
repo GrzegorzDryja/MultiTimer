@@ -1,58 +1,93 @@
 window.onload = function()
 {
-    var start = document.querySelector("#startButton");
-    var pause = document.querySelector("#pauseButton");    
-    var seconds = document.querySelector("#seconds");
-    var reset = document.querySelector("#resetButton");
+    var start = document.querySelector("#startButton"),
+        pause = document.querySelector("#pauseButton"),
+        minutes = document.querySelector("#minutes"),    
+        seconds = document.querySelector("#seconds"),
+        reset = document.querySelector("#resetButton"),
+        name = document.querySelector("#nameInput"),
+        timers = [];
 
-    var timer = new MultiTimer(seconds);
+    var timer = new Timer(minutes, seconds);
+
+    name.addEventListener("click", function()
+        {   
+            var oldName = document.querySelector("#nameInput").innerHTML;
+            console.log(oldName)
+            name.value = "";            
+        }
+    );
+
+    name.addEventListener("dblclick", function()
+        {
+            name.disabled=false;
+        }
+    );
+
+    name.addEventListener("keypress", function()
+        {
+            if(e.key === 'Enter')
+            {                                                
+                timers.push(document.querySelector("#nameInput").innerHTML);
+                console.log(timers[0]);
+            }
+        }
+    );
 
     start.onclick = function()
-    {
-        var startValue = document.querySelector("#seconds").value; 
-        timer.start(startValue);
-    };
+        {
+            var startMinutes = document.querySelector("#minutes").value,
+                startSeconds = document.querySelector("#seconds").value;
+
+            timer.start(startMinutes, startSeconds);
+        };
+
     pause.onclick = function()
-    {
-        timer.pause();
-    };
+        {
+            timer.pause();
+        };
+
     reset.onclick = function()
-    {
-        timer.reset();
-    };
+        {
+            timer.reset();
+        };        
 };
 
-function MultiTimer(seconds)
+function Timer(minutes, seconds)
 {
+    this.minutes = minutes;
     this.seconds = seconds;
     this.startValue;
     this.timeOutRef;
 
-    start = function(startValue)
-                                {
-                                    this.startValue = startValue;
-                                    if (this.timeOutRef)
-                                        this.pause();										        
-                                    this.startStoper();
-                                };
-    this.startStoper = function()
-                                {
-                                    if (this.startValue < 0)
-                                    return;                                    
-                                    this.seconds.value = this.startValue--;                                    
-                                    var self = this;                                    
-                                    this.timeOutRef = setTimeout(function()
-                                    {
-                                        self.startStoper();
-                                    }, 1000);
-                                };
+    this.start = function(startValue)
+        {
+            this.startValue = startValue;
+            if (this.timeOutRef)
+                this.pause();										        
+            this.startTimer();
+        };
+
+    this.startTimer = function()
+        {
+            if (this.startValue < 0)
+            return;                                    
+            this.seconds.value = this.startValue--;                                    
+            var self = this;                                    
+            this.timeOutRef = setTimeout(function()
+            {
+                self.startTimer();
+            }, 1000);
+        };
+
     this.pause = function()
-							    {
-							        clearTimeout(this.timeOutRef);
-							    };
+        {
+            clearTimeout(this.timeOutRef);
+        };
+        
     this.reset = function()
-							    {
-                                    document.querySelector("#seconds").value = "00";
-                                    clearTimeout(this.timeOutRef);
-							    };
+        {
+            document.querySelector("#seconds").value = "00";
+            clearTimeout(this.timeOutRef);
+        };
 }
