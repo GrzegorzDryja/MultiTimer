@@ -6,6 +6,8 @@ window.onload = function()
         seconds = document.querySelector("#seconds"),
         reset = document.querySelector("#resetButton"),
         name = document.querySelector("#nameInput"),
+        add = document.querySelector("#addButton"),
+        remove = document.querySelector("#removeButton"),
         timers = [];
 
     var timer = new Timer(minutes, seconds);
@@ -13,8 +15,7 @@ window.onload = function()
     name.addEventListener("click", function()
         {   
             var oldName = document.querySelector("#nameInput").innerHTML;
-            console.log(oldName)
-            name.value = "";            
+            name.value = ""; //Remember that cleans data           
         });
 
     name.addEventListener("dblclick", function()
@@ -26,8 +27,7 @@ window.onload = function()
         {
             if(e.key === 'Enter')
             {                                                
-               var name = document.querySelector("#nameInput").innerHTML; //Listen to enter is ok, but name is not readed
-               console.log(name);
+               var name = document.querySelector("#nameInput").value;
             }
         });
 
@@ -45,6 +45,14 @@ window.onload = function()
         });
 
     reset.addEventListener("click", function()
+        {
+            timer.reset();
+        });
+    add.addEventListener("click", function()
+        {
+            timer.reset();
+        });
+    remove.addEventListener("click", function()
         {
             timer.reset();
         });   
@@ -79,8 +87,7 @@ function Timer(minutes, seconds)
 
      this.countMinutes = function()
         {   
-            this.minutes.value = this.startMinutes;
-                                    
+            this.minutes.value = this.startMinutes;                                    
         };
 
     this.countSeconds = function()
@@ -105,3 +112,9 @@ function Timer(minutes, seconds)
             clearTimeout(this.timeOutRef);
         };
 };
+
+function add(){
+    var newTimer = new Timer(minutes, seconds);
+
+    
+}
