@@ -15,70 +15,83 @@ window.onload = function()
             var oldName = document.querySelector("#nameInput").innerHTML;
             console.log(oldName)
             name.value = "";            
-        }
-    );
+        });
 
     name.addEventListener("dblclick", function()
         {
             name.disabled=false;
-        }
-    );
+        });
 
-    name.addEventListener("keypress", function()
+    name.addEventListener("keypress", function(e)
         {
             if(e.key === 'Enter')
             {                                                
-                timers.push(document.querySelector("#nameInput").innerHTML);
-                console.log(timers[0]);
+               var name = document.querySelector("#nameInput").innerHTML; //Listen to enter is ok, but name is not readed
+               console.log(name);
             }
-        }
-    );
+        });
 
-    start.onclick = function()
+    start.addEventListener("click", function()
         {
             var startMinutes = document.querySelector("#minutes").value,
                 startSeconds = document.querySelector("#seconds").value;
 
             timer.start(startMinutes, startSeconds);
-        };
+        });
 
-    pause.onclick = function()
+    pause.addEventListener("click", function()
         {
             timer.pause();
-        };
+        });
 
-    reset.onclick = function()
+    reset.addEventListener("click", function()
         {
             timer.reset();
-        };        
+        });   
 };
 
 function Timer(minutes, seconds)
 {
     this.minutes = minutes;
     this.seconds = seconds;
-    this.startValue;
+    this.startMinutes;
+    this.startSeconds;
     this.timeOutRef;
 
-    this.start = function(startValue)
+    this.start = function(startMinutes, startSeconds)
         {
-            this.startValue = startValue;
+            this.startMinutes = startMinutes;
+            this.startSeconds = startSeconds;
             if (this.timeOutRef)
                 this.pause();										        
             this.startTimer();
         };
 
     this.startTimer = function()
-        {
-            if (this.startValue < 0)
-            return;                                    
-            this.seconds.value = this.startValue--;                                    
+        {   if(this.startSeconds <= 0 && this.startMinutes <= 0)
+            return;
+
+            if(this.startSeconds == 0 && --this.startMinutes >= 0)
+            this.startSeconds = 60;
+            this.countSeconds();
+            this.countMinutes();
+        };
+
+     this.countMinutes = function()
+        {   
+            this.minutes.value = this.startMinutes;
+                                    
+        };
+
+    this.countSeconds = function()
+        {  
+            this.seconds.value = --this.startSeconds; 
             var self = this;                                    
             this.timeOutRef = setTimeout(function()
             {
                 self.startTimer();
-            }, 1000);
-        };
+            }, 50);            // Note: 1000!
+        };         
 
     this.pause = function()
         {
@@ -87,41 +100,8 @@ function Timer(minutes, seconds)
         
     this.reset = function()
         {
+            document.querySelector("#minutes").value = "00";
             document.querySelector("#seconds").value = "00";
             clearTimeout(this.timeOutRef);
         };
-}
-
-var startButton = document.querySelector("#startButton");
-var pauseButton = document.querySelector("#pauseButton");
-var resetButton = document.querySelector("#resetButton");
-var pauseBool = false;
-
-startButton.addEventListener("click", start);
-pauseButton.addEventListener("click", pause);
-resetButton.addEventListener("click", reset);
-
-function start(){
-    var startValue = document.querySelector("#seconds").value;
-    pauseBool = false
-    if(startValue > 0){
-        var timer = setInterval(function()
-                {   
-                    document.querySelector("#seconds").value = --startValue;                 
-                    if (pauseBool || startValue <= 0)
-                    {
-                        clearInterval(timer);
-                    }
-                    
-                }, 1000);
-
-    };
-};
-
-function pause(){    
-    pauseBool = true;
-};
-
-function reset(){    
-    document.querySelector("#seconds").value = "00";
 };
