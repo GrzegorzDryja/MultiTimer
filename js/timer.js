@@ -183,12 +183,12 @@ CreateTimerDiv.prototype.buttonsSupport = function(id){
         };
     this.name.addEventListener("click", function()
         {   
-            this.oldName = document.querySelector("#nameInput"+id).innerHTML;
-            name.value = ""; //Remember that cleans data           
+            this.oldName = document.querySelector("#nameInput"+id);
+            this.oldName.value = ""; //Remember that cleans data           
         });
     this.name.addEventListener("dblclick", function()
         {
-            name.disabled=false;
+            this.name.disabled=false;
         });
     this.name.addEventListener("keypress", function(e)
         {
