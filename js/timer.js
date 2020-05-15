@@ -130,8 +130,6 @@ CreateTimerDiv.prototype.buttonsSupport = function(id){
     this.name = document.querySelector("#nameInput"+id);
     this.start = document.querySelector("#startButton"+id);
     this.pause = document.querySelector("#pauseButton"+id);
-    this.minutes = document.querySelector("#minutes"+id);  
-    this.seconds = document.querySelector("#seconds"+id);
     this.reset = document.querySelector("#resetButton"+id);
     this.name = document.querySelector("#nameInput"+id);
     this.add = document.querySelector("#addButton"+id);
@@ -157,9 +155,14 @@ CreateTimerDiv.prototype.buttonsSupport = function(id){
                     --this.minutesCount                                                                             
                 };                     
             countSeconds(); 
-            console.log(this.minutesCount + ":" + this.secondsCount);                      
-        };       
 
+            this.minutes = document.querySelector("#minutes"+id);  
+            this.seconds = document.querySelector("#seconds"+id);
+
+            this.minutes.value = this.minutesCount;
+            this.seconds.value = this.secondsCount;                      
+        };
+         
     function countSeconds()
         {  
             --this.secondsCount;
@@ -168,30 +171,25 @@ CreateTimerDiv.prototype.buttonsSupport = function(id){
                     startCount(this.minutesCount, this.secondsCount);
                 }, 50);                                                              // Note: 1000!
         };
-
     function pauseCount()
         {
             clearTimeout(this.timeOutRef);
-        };
-        
+        };        
     function resetCount()
         {
             document.querySelector("#minutes"+id).value = "00";
             document.querySelector("#seconds"+id).value = "00";
             clearTimeout(this.timeOutRef);
         };
-
     this.name.addEventListener("click", function()
         {   
             this.oldName = document.querySelector("#nameInput"+id).innerHTML;
             name.value = ""; //Remember that cleans data           
         });
-
     this.name.addEventListener("dblclick", function()
         {
             name.disabled=false;
         });
-
     this.name.addEventListener("keypress", function(e)
         {
             if(e.key === 'Enter')
@@ -200,20 +198,17 @@ CreateTimerDiv.prototype.buttonsSupport = function(id){
             console.log(this.name)
             }
         });
-
     this.start.addEventListener("click", function()
         {
             this.minutesValue = document.querySelector("#minutes"+id).value;
             this.secondsValue = document.querySelector("#seconds"+id).value;
             startCount(this.minutesValue, this.secondsValue);
         });
-
     this.pause.addEventListener("click", function()
         {
             console.log("pause"+id);
             pauseCount();
         });
-
     this.reset.addEventListener("click", function()
         {
             console.log("reset"+id);
@@ -223,7 +218,6 @@ CreateTimerDiv.prototype.buttonsSupport = function(id){
         {
             console.log("add"+id);
         });
-
     this.remove.addEventListener("click", function()
         {
             console.log("remove"+id);
