@@ -5,9 +5,12 @@ window.onload = function()
 
     var timer3 = new CreateTimerDiv(3);
     timer3.buttonsSupport(3);
+
+    var timer3 = new CreateTimerDiv(4);
+    timer3.buttonsSupport(4);
 };
 
-function CreateTimerDiv(id){    
+function CreateTimerDiv(i){    
 
     function div(){
         return document.createElement("div");
@@ -26,7 +29,7 @@ function CreateTimerDiv(id){
     var inputName = input();
         inputName.type="text";
         inputName.className="name";
-        inputName.id="nameInput"+id;
+        inputName.id="nameInput"+i;
         inputName.defaultValue="Name it here...";
         inputName.maxLength="10";
 
@@ -37,7 +40,7 @@ function CreateTimerDiv(id){
     var inputMinutes = input();
         inputMinutes.type="text";
         inputMinutes.className="name";
-        inputMinutes.id="minutes"+id;
+        inputMinutes.id="minutes"+i;
         inputMinutes.title="Minutes";
         inputMinutes.maxLength="2";
         inputMinutes.defaultValue="00";
@@ -49,7 +52,7 @@ function CreateTimerDiv(id){
     var inputSeconds = input();
         inputSeconds.type="text";
         inputSeconds.className="name";
-        inputSeconds.id="seconds"+id;
+        inputSeconds.id="seconds"+i;
         inputSeconds.title="Seconds";
         inputSeconds.maxLength="2";
         inputSeconds.defaultValue ="00";
@@ -58,53 +61,53 @@ function CreateTimerDiv(id){
 
     var startButtonDiv = div();
         startButtonDiv.className="main button";
-        startButtonDiv.id="startButtonDiv"+id;
+        startButtonDiv.id="startButtonDiv"+i;
         startButtonDiv.title="Start";
 
     var startButton = input();
         startButton.type="button";
         startButton.value="Start";
-        startButton.id="startButton"+id;
+        startButton.id="startButton"+i;
 
     var pauseButtonDiv = div();
         pauseButtonDiv.className="main button";
-        pauseButtonDiv.id="pauseButtonDiv"+id;
+        pauseButtonDiv.id="pauseButtonDiv"+i;
         pauseButtonDiv.title="Pause";
 
     var pauseButton = input();
         pauseButton.type="button";
         pauseButton.value="Stop";
-        pauseButton.id="pauseButton"+id;
+        pauseButton.id="pauseButton"+i;
 
     var resetButtonDiv = div();
         resetButtonDiv.className="main button";
-        resetButtonDiv.id="resetButton"+id;
+        resetButtonDiv.id="resetButton"+i;
         resetButtonDiv.title="Reset";
 
     var resetButton = input();
         resetButton.type="button";
         resetButton.value="Reset";
-        resetButton.id="resetButton"+id;
+        resetButton.id="resetButton"+i;
 
     var addButtonDiv = div()
         addButtonDiv.className="main button";
-        addButtonDiv.id="addButton"+id;
+        addButtonDiv.id="addButton"+i;
         addButtonDiv.title="Add";
 
     var addButton = input();
         addButton.type="button";
         addButton.value="Add";
-        addButton.id="addButton"+id;
+        addButton.id="addButton"+i;
             
     var removeButtonDiv = div()
         removeButtonDiv.className="main button";
-        removeButtonDiv.id="removeButton"+id;
+        removeButtonDiv.id="removeButton"+i;
         removeButtonDiv.title="Remove";
 
     var removeButton = input();
         removeButton.type="button";
         removeButton.value="Remove";
-        removeButton.id="removeButton"+id;
+        removeButton.id="removeButton"+i;
 
     document.body.appendChild(timerDiv);
     timerDiv.appendChild(nameDiv);
@@ -126,64 +129,22 @@ function CreateTimerDiv(id){
     removeButtonDiv.appendChild(removeButton);
 }
 
-CreateTimerDiv.prototype.buttonsSupport = function(id){
-    this.name = document.querySelector("#nameInput"+id);
-    this.start = document.querySelector("#startButton"+id);
-    this.pause = document.querySelector("#pauseButton"+id);
-    this.reset = document.querySelector("#resetButton"+id);
-    this.name = document.querySelector("#nameInput"+id);
-    this.add = document.querySelector("#addButton"+id);
-    this.remove = document.querySelector("#removeButton"+id);
+CreateTimerDiv.prototype.buttonsSupport = function(i){
+    this.name = document.querySelector("#nameInput"+i);
+    this.start = document.querySelector("#startButton"+i);
+    this.pause = document.querySelector("#pauseButton"+i);
+    this.reset = document.querySelector("#resetButton"+i);
+    this.name = document.querySelector("#nameInput"+i);
+    this.add = document.querySelector("#addButton"+i);
+    this.remove = document.querySelector("#removeButton"+i);
 
     this.minutesCount;
     this.secondsCount;
     this.timeOutRef;
 
-    function startCount(min, sec)
-        {               
-            this.minutesCount = min;
-            this.secondsCount = sec; 
-            
-            if (this.timeOutRef)
-                pauseCount();	
-            if(this.secondsCount <= 0 && this.minutesCount <= 0)
-            return;
-
-            if(this.secondsCount == 0 && this.minutesCount >= 0)
-                {
-                    this.secondsCount = 60;
-                    --this.minutesCount                                                                             
-                };                     
-            countSeconds(); 
-
-            this.minutes = document.querySelector("#minutes"+id);  
-            this.seconds = document.querySelector("#seconds"+id);
-
-            this.minutes.value = this.minutesCount;
-            this.seconds.value = this.secondsCount;                      
-        };
-         
-    function countSeconds()
-        {  
-            --this.secondsCount;
-            this.timeOutRef = setTimeout(function()
-                {
-                    startCount(this.minutesCount, this.secondsCount);
-                }, 50);                                                              // Note: 1000!
-        };
-    function pauseCount()
-        {
-            clearTimeout(this.timeOutRef);
-        };        
-    function resetCount()
-        {
-            document.querySelector("#minutes"+id).value = "00";
-            document.querySelector("#seconds"+id).value = "00";
-            clearTimeout(this.timeOutRef);
-        };
     this.name.addEventListener("click", function()
         {   
-            this.oldName = document.querySelector("#nameInput"+id);
+            this.oldName = document.querySelector("#nameInput"+i);
             this.oldName.value = ""; //Remember that cleans data           
         });
     this.name.addEventListener("dblclick", function()
@@ -194,32 +155,74 @@ CreateTimerDiv.prototype.buttonsSupport = function(id){
         {
             if(e.key === 'Enter')
             {                                                
-            this.name = document.querySelector("#nameInput"+id).value;
+            this.name = document.querySelector("#nameInput"+i).value;
             console.log(this.name)
             }
         });
     this.start.addEventListener("click", function()
         {
-            this.minutesValue = document.querySelector("#minutes"+id).value;
-            this.secondsValue = document.querySelector("#seconds"+id).value;
-            startCount(this.minutesValue, this.secondsValue);
+            this.minutesValue = document.querySelector("#minutes"+i).value;
+            this.secondsValue = document.querySelector("#seconds"+i).value;
+            startCount(this.minutesValue, this.secondsValue, i);
         });
     this.pause.addEventListener("click", function()
         {
-            console.log("pause"+id);
+            console.log("pause"+i);
             pauseCount();
         });
     this.reset.addEventListener("click", function()
         {
-            console.log("reset"+id);
+            console.log("reset"+i);
             resetCount();
         });
     this.add.addEventListener("click", function()
         {
-            console.log("add"+id);
+            console.log("add"+i);
         });
     this.remove.addEventListener("click", function()
         {
-            console.log("remove"+id);
+            console.log("remove"+i);
         });   
+};
+
+function startCount(min, sec, i, timeOutRef)
+{   
+    var timeOutRef;
+    
+    if (timeOutRef)
+        pauseCount();	
+    if(sec < 0 && min <= 0)
+    return;
+
+    if(sec == 0 && min > 0)
+        {
+            sec = 60;
+            --min;                                                                             
+        };                     
+    countSeconds(min, sec, i, timeOutRef); 
+
+    var minutes = document.querySelector("#minutes"+i);  
+    var seconds = document.querySelector("#seconds"+i);
+
+    minutes.value = min;
+    seconds.value = sec;                      
+    };
+ 
+function countSeconds(min, sec, i, timeOutRef)
+{  
+    --sec;
+    timeOutRef = setTimeout(function()
+        {
+            startCount(min, sec, i, timeOutRef);
+        }, 50);                                                              // Note: 1000!
+};
+function pauseCount(timeOutRef)
+{
+    clearTimeout(timeOutRef);
+};        
+function resetCount(timeOutRef)
+{
+    document.querySelector("#minutes"+i).value = "00";
+    document.querySelector("#seconds"+i).value = "00";
+    clearTimeout(timeOutRef);
 };
