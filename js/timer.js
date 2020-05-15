@@ -1,178 +1,64 @@
 window.onload = function()
 {
-    var timerDiv = new Timer();
-};
-
-function Timer(){    
-
-    function div(){
-        return document.createElement("div");
-    }
-    function input(){
-        return document.createElement("input");
-    }
-
-    this.timerDiv = div();
-    this.timerDiv.className = "timer";
-
-    this.nameDiv = div();
-    this.nameDiv.className = "main";
-    this.nameDiv.title = "Name it and click enter";
-
-    this.inputName = input();
-    this.inputName.type="text";
-    this.inputName.className="name";
-    this.inputName.id="nameInput";
-    this.inputName.defaultValue="Name it here...";
-    this.inputName.maxLength="10";
-
-    this.counterDiv = div();
-    this.counterDiv.className = "main";
-    this.counterDiv.title = "Timer";
-
-    this.inputMinutes = input();
-    this.inputMinutes.type="text";
-    this.inputMinutes.className="name";
-    this.inputMinutes.id="minutes";
-    this.inputMinutes.title="Minutes";
-    this.inputMinutes.maxLength="2";
-    this.inputMinutes.defaultValue="00";
-    this.inputMinutes.size="2";
-    this.inputMinutes.pattern="[0-9]{2}";
-        
-    this.colonNode = document.createTextNode(":");    
-
-    this.inputSeconds = input();
-    this.inputSeconds.type="text";
-    this.inputSeconds.className="name";
-    this.inputSeconds.id="seconds";
-    this.inputSeconds.title="Seconds";
-    this.inputSeconds.maxLength="2";
-    this.inputSeconds.defaultValue ="00";
-    this.inputSeconds.size="2";
-    this.inputSeconds.pattern="[0-6.0-9]{2}";
-
-    this.startButtonDiv = div();
-    this.startButtonDiv.className="main button";
-    this.startButtonDiv.id="startButtonDiv";
-    this.startButtonDiv.title="Start";
-
-    this.startButton = input();
-    this.startButton.type="button";
-    this.startButton.value="Start";
-    this.startButton.id="startButton";
-
-    this.pauseButtonDiv = div();
-    this.pauseButtonDiv.className="main button";
-    this.pauseButtonDiv.id="pauseButtonDiv";
-    this.pauseButtonDiv.title="Pause";
-
-    this.pauseButton = input();
-    this.pauseButton.type="button";
-    this.pauseButton.value="Stop";
-    this.pauseButton.id="pauseButton";
-
-    this.resetButtonDiv = div();
-    this.resetButtonDiv.className="main button";
-    this.resetButtonDiv.id="resetButton";
-    this.resetButtonDiv.title="Reset";
-
-    this.resetButton = input();
-    this.resetButton.type="button";
-    this.resetButton.value="Reset";
-    this.resetButton.id="resetButton";
-
-    this.addButtonDiv = div()
-    this.addButtonDiv.className="main button";
-    this.addButtonDiv.id="addButton";
-    this.addButtonDiv.title="Add";
-
-    this.addButton = input();
-    this.addButton.type="button";
-    this.addButton.value="Add";
-    this.addButton.id="addButton";
-            
-    this.removeButtonDiv = div()
-    this.removeButtonDiv.className="main button";
-    this.removeButtonDiv.id="removeButton";
-    this.removeButtonDiv.title="Remove";
-
-    this.removeButton = input();
-    this.removeButton.type="button";
-    this.removeButton.value="Remove";
-    this.removeButton.id="removeButton";
-
-    document.body.appendChild(this.timerDiv);
-    this.timerDiv.appendChild(this.nameDiv);
-    this.timerDiv.appendChild(this.nameDiv);
-    this.timerDiv.appendChild(this.counterDiv);
-    this.timerDiv.appendChild(this.startButtonDiv);
-    this.timerDiv.appendChild(this.pauseButtonDiv);
-    this.timerDiv.appendChild(this.resetButtonDiv);
-    this.timerDiv.appendChild(this.addButtonDiv);
-    this.timerDiv.appendChild(this.removeButtonDiv);
-    this.nameDiv.appendChild(this.inputName);
-    this.counterDiv.appendChild(this.inputMinutes);
-    this.counterDiv.appendChild(this.colonNode);    
-    this.counterDiv.appendChild(this.inputSeconds);
-    this.startButtonDiv.appendChild(this.startButton);
-    this.pauseButtonDiv.appendChild(this.pauseButton);
-    this.resetButtonDiv.appendChild(this.resetButton);
-    this.addButtonDiv.appendChild(this.addButton);
-    this.removeButtonDiv.appendChild(this.removeButton);
-
-    this.start = document.querySelector("#startButton");
-    this.pause = document.querySelector("#pauseButton");
-    this.minutes = document.querySelector("#minutes");  
-    this.seconds = document.querySelector("#seconds");
-    this.reset = document.querySelector("#resetButton");
-    this.name = document.querySelector("#nameInput");
-    this.add = document.querySelector("#addButton");
-    this.remove = document.querySelector("#removeButton");
-    //timers = [];    
-
-    this.name.addEventListener("click", function()
-    {   
-        //var oldName = document.querySelector("#nameInput").innerHTML;
-        this.name.value = ""; //Remember that cleans data           
-    });
-
-    this.name.addEventListener("dblclick", function()
-    {
-        this.name.disabled=false;
-    });
-
-    this.name.addEventListener("keypress", function(e)
-    {
-        if(e.key === 'Enter')
-        {                                                
-            this.name = document.querySelector("#nameInput").value;
-        }
-    });
-
-    this.start.addEventListener("click", function()
-    {
-        this.startMinutes = document.querySelector("#minutes").value,
-        this.startSeconds = document.querySelector("#seconds").value;
-
-        start(this.startMinutes, this.startSeconds);
-    });
-
-    this.pause.addEventListener("click", function()
-    {
-        this.timer.pause();
-    });
-
-    this.reset.addEventListener("click", function()
-    {
-        this.timer.reset();
-    });
-    this.add.addEventListener("click", this.createTimer);
-    this.remove.addEventListener("click", function()
-    {
-        remove();
-    });
+    createTimerDiv(); 
     
+                                    var start = document.querySelector("#startButton"),
+                                        pause = document.querySelector("#pauseButton"),
+                                        minutes = document.querySelector("#minutes"),    
+                                        seconds = document.querySelector("#seconds"),
+                                        reset = document.querySelector("#resetButton"),
+                                        name = document.querySelector("#nameInput"),
+                                        add = document.querySelector("#addButton"),
+                                        remove = document.querySelector("#removeButton"),
+                                        timers = [];
+                                    
+    var timer = new Timer(minutes, seconds);
+
+                                    name.addEventListener("click", function()
+                                        {   
+                                            var oldName = document.querySelector("#nameInput").innerHTML;
+                                            name.value = ""; //Remember that cleans data           
+                                        });
+
+                                    name.addEventListener("dblclick", function()
+                                        {
+                                            name.disabled=false;
+                                        });
+
+                                    name.addEventListener("keypress", function(e)
+                                        {
+                                            if(e.key === 'Enter')
+                                            {                                                
+                                            var name = document.querySelector("#nameInput").value;
+                                            }
+                                        });
+
+                                    start.addEventListener("click", function()
+                                        {
+                                            var startMinutes = document.querySelector("#minutes").value,
+                                                startSeconds = document.querySelector("#seconds").value;
+
+    timer.start(startMinutes, startSeconds);
+                                        });
+
+                                    pause.addEventListener("click", function()
+                                        {
+    timer.pause();
+                                        });
+
+                                    reset.addEventListener("click", function()
+                                        {
+    timer.reset();
+                                        });
+                                    add.addEventListener("click", createTimer);
+                                    remove.addEventListener("click", function()
+                                        {
+                                            remove();
+                                        });   
+                                };
+
+function Timer(minutes, seconds)
+{
     this.minutes = minutes;
     this.seconds = seconds;
     this.startMinutes;
@@ -225,3 +111,126 @@ function Timer(){
             clearTimeout(this.timeOutRef);
         };
 };
+
+function add(){
+    createTimer();
+}
+
+function createTimerDiv(){    
+
+    function div(){
+        return document.createElement("div");
+    }
+    function input(){
+        return document.createElement("input");
+    }
+
+    var timerDiv = div();
+        timerDiv.className = "timer";
+
+    var nameDiv = div();
+        nameDiv.className = "main";
+        nameDiv.title = "Name it and click enter";
+
+    var inputName = input();
+        inputName.type="text";
+        inputName.className="name";
+        inputName.id="nameInput";
+        inputName.defaultValue="Name it here...";
+        inputName.maxLength="10";
+
+    var counterDiv = div();
+        counterDiv.className = "main";
+        counterDiv.title = "Timer";
+
+    var inputMinutes = input();
+        inputMinutes.type="text";
+        inputMinutes.className="name";
+        inputMinutes.id="minutes";
+        inputMinutes.title="Minutes";
+        inputMinutes.maxLength="2";
+        inputMinutes.defaultValue="00";
+        inputMinutes.size="2";
+        inputMinutes.pattern="[0-9]{2}";
+        
+    var colonNode = document.createTextNode(":");    
+
+    var inputSeconds = input();
+        inputSeconds.type="text";
+        inputSeconds.className="name";
+        inputSeconds.id="seconds";
+        inputSeconds.title="Seconds";
+        inputSeconds.maxLength="2";
+        inputSeconds.defaultValue ="00";
+        inputSeconds.size="2";
+        inputSeconds.pattern="[0-6.0-9]{2}";
+
+    var startButtonDiv = div();
+        startButtonDiv.className="main button";
+        startButtonDiv.id="startButtonDiv";
+        startButtonDiv.title="Start";
+
+    var startButton = input();
+        startButton.type="button";
+        startButton.value="Start";
+        startButton.id="startButton";
+
+    var pauseButtonDiv = div();
+        pauseButtonDiv.className="main button";
+        pauseButtonDiv.id="pauseButtonDiv";
+        pauseButtonDiv.title="Pause";
+
+    var pauseButton = input();
+        pauseButton.type="button";
+        pauseButton.value="Stop";
+        pauseButton.id="pauseButton";
+
+    var resetButtonDiv = div();
+        resetButtonDiv.className="main button";
+        resetButtonDiv.id="resetButton";
+        resetButtonDiv.title="Reset";
+
+    var resetButton = input();
+        resetButton.type="button";
+        resetButton.value="Reset";
+        resetButton.id="resetButton";
+
+    var addButtonDiv = div()
+        addButtonDiv.className="main button";
+        addButtonDiv.id="addButton";
+        addButtonDiv.title="Add";
+
+    var addButton = input();
+        addButton.type="button";
+        addButton.value="Add";
+        addButton.id="addButton";
+            
+    var removeButtonDiv = div()
+        removeButtonDiv.className="main button";
+        removeButtonDiv.id="removeButton";
+        removeButtonDiv.title="Remove";
+
+    var removeButton = input();
+        removeButton.type="button";
+        removeButton.value="Remove";
+        removeButton.id="removeButton";
+
+    document.body.appendChild(timerDiv);
+    timerDiv.appendChild(nameDiv);
+    timerDiv.appendChild(nameDiv);
+    timerDiv.appendChild(counterDiv);
+    timerDiv.appendChild(startButtonDiv);
+    timerDiv.appendChild(pauseButtonDiv);
+    timerDiv.appendChild(resetButtonDiv);
+    timerDiv.appendChild(addButtonDiv);
+    timerDiv.appendChild(removeButtonDiv);
+    nameDiv.appendChild(inputName);
+    counterDiv.appendChild(inputMinutes);
+    counterDiv.appendChild(colonNode);    
+    counterDiv.appendChild(inputSeconds);
+    startButtonDiv.appendChild(startButton);
+    pauseButtonDiv.appendChild(pauseButton);
+    resetButtonDiv.appendChild(resetButton);
+    addButtonDiv.appendChild(addButton);
+    removeButtonDiv.appendChild(removeButton);
+}
