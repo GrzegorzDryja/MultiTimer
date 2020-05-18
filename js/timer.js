@@ -1,16 +1,21 @@
+var q=0; //Timer count for add id
+
 window.onload = function()
 {
-    var timer2 = new CreateTimerDiv(2);
-    timer2.buttonsSupport(2);
+    newTimer(0);
+}
 
-    var timer3 = new CreateTimerDiv(3);
-    timer3.buttonsSupport(3);
+function newTimer(q){
+    var timer = new TimerDiv(q);
+    timer.buttonsSupport(q);
+}
 
-    var timer3 = new CreateTimerDiv(4);
-    timer3.buttonsSupport(4);
-};
+function removeTimer(i){
+    var removeElement = document.querySelector("#timer"+i);
+        removeElement.parentNode.removeChild(removeElement);
+}
 
-function CreateTimerDiv(i){    
+function TimerDiv(i){    
 
     function div(){
         return document.createElement("div");
@@ -21,6 +26,7 @@ function CreateTimerDiv(i){
 
     var timerDiv = div();
         timerDiv.className = "timer";
+        timerDiv.id = "timer"+i;
 
     var nameDiv = div();
         nameDiv.className = "main";
@@ -129,7 +135,8 @@ function CreateTimerDiv(i){
     removeButtonDiv.appendChild(removeButton);
 }
 
-CreateTimerDiv.prototype.buttonsSupport = function(i){
+TimerDiv.prototype.buttonsSupport = function(i){
+       
     this.name = document.querySelector("#nameInput"+i);
     this.start = document.querySelector("#startButton"+i);
     this.pause = document.querySelector("#pauseButton"+i);
@@ -138,52 +145,55 @@ CreateTimerDiv.prototype.buttonsSupport = function(i){
     this.add = document.querySelector("#addButton"+i);
     this.remove = document.querySelector("#removeButton"+i);
 
-    this.minutesCount;
-    this.secondsCount;
-    this.timeOutRef;
-
     this.name.addEventListener("click", function()
         {   
             this.oldName = document.querySelector("#nameInput"+i);
-            this.oldName.value = ""; //Remember that cleans data           
+            this.oldName.value = ""; //Remember that cleans data
+            console.log("clean name "+i)          
         });
-    this.name.addEventListener("dblclick", function()
-        {
-            this.name.disabled=false;
-        });
+
     this.name.addEventListener("keypress", function(e)
         {
             if(e.key === 'Enter')
             {                                                
             this.name = document.querySelector("#nameInput"+i).value;
-            console.log(this.name)
+            console.log(this.name+i)
             }
         });
+
     this.start.addEventListener("click", function()
         {
             this.minutesValue = document.querySelector("#minutes"+i).value;
             this.secondsValue = document.querySelector("#seconds"+i).value;
-            startCount(this.minutesValue, this.secondsValue, i);
+            startCount(this.minutesValue, this.secondsValue, i, undefined);
+            console.log("start"+i);
         });
+
     this.pause.addEventListener("click", function()
         {
             console.log("pause"+i);
-            pauseCount();
         });
+
     this.reset.addEventListener("click", function()
         {
+            document.querySelector("#minutes"+i).value = "00";
+            document.querySelector("#seconds"+i).value = "00";
             console.log("reset"+i);
-            resetCount();
         });
+
     this.add.addEventListener("click", function()
         {
+            newTimer(++q);
             console.log("add"+i);
         });
+
     this.remove.addEventListener("click", function()
         {
+            removeTimer(i);
             console.log("remove"+i);
-        });   
+        });
 };
+
 
 function startCount(min, sec, i, timeOutRef)
 {   
@@ -206,7 +216,7 @@ function startCount(min, sec, i, timeOutRef)
 
     minutes.value = min;
     seconds.value = sec;                      
-    };
+};
  
 function countSeconds(min, sec, i, timeOutRef)
 {  
@@ -216,10 +226,12 @@ function countSeconds(min, sec, i, timeOutRef)
             startCount(min, sec, i, timeOutRef);
         }, 50);                                                              // Note: 1000!
 };
+
 function pauseCount(timeOutRef)
 {
     clearTimeout(timeOutRef);
-};        
+};     
+
 function resetCount(timeOutRef)
 {
     document.querySelector("#minutes"+i).value = "00";
