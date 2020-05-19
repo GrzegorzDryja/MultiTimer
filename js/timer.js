@@ -1,26 +1,23 @@
-var q=0; //Unforutnetly global variable, timer count for add id
-var timers = [];
+var i=0;                                                                //Unforutnetly global variable, timer count for add id
+var divs = [];
+var timers = [];                                                        //Here I put timer counting object
 
 window.onload = function()
-{
-    newTimer(0);
-}
+    {
+        newTimer(0);
+    }
 
-function newTimer(q){
-    var greenDiv = new TimerDiv(q);
-    greenDiv.buttonsSupport(q);
-    startTimer(q);
-}
+function newTimer(i)
+    {
+        divs[i] = new TimerDiv(i);
+        timers[i] = new Timer(i);
+    }
 
-function removeTimer(i){
-    var removeElement = document.querySelector("#timer"+i);
-        removeElement.parentNode.removeChild(removeElement);
-}
-
-function startTimer(q){    
-    timers[q] = new Timer(0, 0, 0);
-    console.dir(timers[q]);
-}
+function removeTimer(i)
+    {
+        var removeElement = document.querySelector("#timer"+i);
+            removeElement.parentNode.removeChild(removeElement);
+    }
 
 function TimerDiv(i){    
 
@@ -141,127 +138,101 @@ function TimerDiv(i){
     addButtonDiv.appendChild(addButton);
     removeButtonDiv.appendChild(removeButton);
 }
+function Timer(i)
+    {        
+        this.name = document.querySelector("#nameInput"+i);
+        this.min = document.querySelector("#minutes"+i);
+        this.sec = document.querySelector("#seconds"+i);
+        this.start = document.querySelector("#startButton"+i);
+        this.pause = document.querySelector("#pauseButton"+i);
+        this.reset = document.querySelector("#resetButton"+i);
+        this.add = document.querySelector("#addButton"+i);
+        this.remove = document.querySelector("#removeButton"+i);
+        this.timeOut = undefined;
 
-TimerDiv.prototype.buttonsSupport = function(i){
-       
-    this.name = document.querySelector("#nameInput"+i);
-    this.start = document.querySelector("#startButton"+i);
-    this.pause = document.querySelector("#pauseButton"+i);
-    this.reset = document.querySelector("#resetButton"+i);
-    this.name = document.querySelector("#nameInput"+i);
-    this.add = document.querySelector("#addButton"+i);
-    this.remove = document.querySelector("#removeButton"+i);
+        this.name.addEventListener("click", function()
+            {   
+                this.oldName = document.querySelector("#nameInput"+i);
+                this.oldName.value = "";                                                //Remember that cleans data
+                console.log("clean name "+i)          
+            });
 
-    this.name.addEventListener("click", function()
-        {   
-            this.oldName = document.querySelector("#nameInput"+i);
-            this.oldName.value = "";                                                //Remember that cleans data
-            console.log("clean name "+i)          
-        });
-
-    this.name.addEventListener("keypress", function(e)
-        {
-            if(e.key === 'Enter')
-            {                                                
-            this.name = document.querySelector("#nameInput"+i).value;
-            console.log(this.name+i)
-            }
-        });
-
-    this.start.addEventListener("click", function()
-        {   
-            this.minutesValue = document.querySelector("#minutes"+i).value;
-            this.secondsValue = document.querySelector("#seconds"+i).value;          
-            timers[i].start(this.minutesValue, this.secondsValue, i);
-            console.dir(timers[i]);
-            console.log("start"+i);
-        });
-
-    this.pause.addEventListener("click", function()
-        {   
-            timers[i].pause();
-            console.log("pause"+i);
-        });
-
-    this.reset.addEventListener("click", function()
-        {            
-            document.querySelector("#minutes"+i).value = "00";
-            document.querySelector("#seconds"+i).value = "00";
-            timers[i].reset();
-            console.log("reset"+i);
-        });
-
-    this.add.addEventListener("click", function()
-        {
-            newTimer(++q); // go at the beginnig if you wondering what is q
-            console.log("add"+i);
-        });
-
-    this.remove.addEventListener("click", function()
-        {
-            removeTimer(i);
-            console.log("remove"+i);
-        });
-};
-
-function Timer(min, sec, i)
-{    
-    this.min = min;
-    this.sec = sec;
-    this.timeOutRef = 0;
-
-    this.pause = function()
-    {
-        clearTimeout(this.timeOutRef);
-    };
-
-    this.reset = function()
-    {
-        clearTimeout(this.timeOutRef);
-    };
-
-    this.start = function(min, sec, i)
-        {
-            this.min = min;
-            this.sec = sec;
-                                    
-            if (this.timeOutRef || this.sec == 0 || this.min == 0)
-                {
-                    clearTimeout(this.timeOutRef);
-                    this.pause();
+        this.name.addEventListener("keypress", function(e)
+            {
+                if(e.key === 'Enter')
+                {                                                
+                this.name = document.querySelector("#nameInput"+i).value;
+                console.log(this.name+i)
                 }
+            });
+        
+        this.start.addEventListener("click", function()
+            {   
+                this.min = document.querySelector("#minutes"+i).value;
+                this.sec = document.querySelector("#seconds"+i).value;
+                timers[i].count();                                                   //Have to call count function via object
+            });
+
+        this.pause.addEventListener("click", function()
+            {   
+                timers[i].stop();
+                console.log("pause"+i);
+            });
+
+        this.reset.addEventListener("click", function()
+            {            
+                document.querySelector("#minutes"+i).value = "00";
+                document.querySelector("#seconds"+i).value = "00";
+                timers[i].stop();
                 
-            this.count();
-        }
+            });
 
-    this.count = function(min, sec, i)
-        {            this.min = min;
-            this.sec = sec;
-            if(this.sec <= 0 && this.min <= 0)
-                this.secCount();
+        this.add.addEventListener("click", function()
+            {
+                newTimer(++i);
+                --i;
+                this.add = document.querySelector("#addButton"+i);
+                this.add.style.visibility = "hidden";
 
-            if(this.sec == 0 && this.min > 0)
+            });
+
+        this.remove.addEventListener("click", function()
+            {
+                removeTimer(i);
+            });
+        
+        this.stop = function()
+            {
+                clearTimeout(this.timeOut);
+            }    
+
+        this.countSeconds = function()
+            {            
+                this.timeOut = setTimeout(function()
+                    {
+                        timers[i].seconds()                             //Can't put count() function here - it dosn't work
+                    }
+                , 1000);
+            }
+
+        this.seconds = function()
+            {
+                timers[i].count();
+            }
+
+        this.count = function()    
+            {   
+                if(this.sec.value == 0 && this.min.value > 0)
                 {
-                    this.sec = 60;
-                    --this.min;                                                                             
-                };     
-            this.secCount(min, sec, i);
-        };
+                    this.sec.value = 60;
+                    --this.min.value;
+                    this.countSeconds();                                                                              
+                };              
 
-    this.secCount = function(min, sec, i)
-        {               this.min = min;
-            this.sec = sec;
-            this.timeOutRef = setTimeout(
-                --this.sec
-            , 1000);
-            console.log(this.min + ":" + this.sec + "/" + i + "/" + this.timeOutRef);
-
-        }      
-
-
-                                /*             this.minutes = document.querySelector("#minutes"+i);  
-                                            this.seconds = document.querySelector("#seconds"+i);
-                                    
-                                            this.minutes.value = min;
-                                            this.seconds.value = sec;      */
-};
+                if(this.sec.value > 0)
+                    {   
+                        --this.sec.value
+                        this.countSeconds();                
+                    }            
+            }
+    };
