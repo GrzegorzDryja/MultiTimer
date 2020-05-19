@@ -1,4 +1,5 @@
-var q=0; //Timer count for add id
+var q=0; //Unforutnetly global variable, timer count for add id
+var timers = [];
 
 window.onload = function()
 {
@@ -6,13 +7,19 @@ window.onload = function()
 }
 
 function newTimer(q){
-    var timer = new TimerDiv(q);
-    timer.buttonsSupport(q);
+    var greenDiv = new TimerDiv(q);
+    greenDiv.buttonsSupport(q);
+    startTimer(q);
 }
 
 function removeTimer(i){
     var removeElement = document.querySelector("#timer"+i);
         removeElement.parentNode.removeChild(removeElement);
+}
+
+function startTimer(q){    
+    timers[q] = new Timer(0, 0, 0);
+    console.dir(timers[q]);
 }
 
 function TimerDiv(i){    
@@ -148,7 +155,7 @@ TimerDiv.prototype.buttonsSupport = function(i){
     this.name.addEventListener("click", function()
         {   
             this.oldName = document.querySelector("#nameInput"+i);
-            this.oldName.value = ""; //Remember that cleans data
+            this.oldName.value = "";                                                //Remember that cleans data
             console.log("clean name "+i)          
         });
 
@@ -162,28 +169,31 @@ TimerDiv.prototype.buttonsSupport = function(i){
         });
 
     this.start.addEventListener("click", function()
-        {
+        {   
             this.minutesValue = document.querySelector("#minutes"+i).value;
-            this.secondsValue = document.querySelector("#seconds"+i).value;
-            startCount(this.minutesValue, this.secondsValue, i, undefined);
+            this.secondsValue = document.querySelector("#seconds"+i).value;          
+            timers[i].start(this.minutesValue, this.secondsValue, i);
+            console.dir(timers[i]);
             console.log("start"+i);
         });
 
     this.pause.addEventListener("click", function()
-        {
+        {   
+            timers[i].pause();
             console.log("pause"+i);
         });
 
     this.reset.addEventListener("click", function()
-        {
+        {            
             document.querySelector("#minutes"+i).value = "00";
             document.querySelector("#seconds"+i).value = "00";
+            timers[i].reset();
             console.log("reset"+i);
         });
 
     this.add.addEventListener("click", function()
         {
-            newTimer(++q);
+            newTimer(++q); // go at the beginnig if you wondering what is q
             console.log("add"+i);
         });
 
@@ -194,47 +204,64 @@ TimerDiv.prototype.buttonsSupport = function(i){
         });
 };
 
+function Timer(min, sec, i)
+{    
+    this.min = min;
+    this.sec = sec;
+    this.timeOutRef = 0;
 
-function startCount(min, sec, i, timeOutRef)
-{   
-    var timeOutRef;
-    
-    if (timeOutRef)
-        pauseCount();	
-    if(sec < 0 && min <= 0)
-    return;
+    this.pause = function()
+    {
+        clearTimeout(this.timeOutRef);
+    };
 
-    if(sec == 0 && min > 0)
+    this.reset = function()
+    {
+        clearTimeout(this.timeOutRef);
+    };
+
+    this.start = function(min, sec, i)
         {
-            sec = 60;
-            --min;                                                                             
-        };                     
-    countSeconds(min, sec, i, timeOutRef); 
+            this.min = min;
+            this.sec = sec;
+                                    
+            if (this.timeOutRef || this.sec == 0 || this.min == 0)
+                {
+                    clearTimeout(this.timeOutRef);
+                    this.pause();
+                }
+                
+            this.count();
+        }
 
-    var minutes = document.querySelector("#minutes"+i);  
-    var seconds = document.querySelector("#seconds"+i);
+    this.count = function(min, sec, i)
+        {            this.min = min;
+            this.sec = sec;
+            if(this.sec <= 0 && this.min <= 0)
+                this.secCount();
 
-    minutes.value = min;
-    seconds.value = sec;                      
-};
- 
-function countSeconds(min, sec, i, timeOutRef)
-{  
-    --sec;
-    timeOutRef = setTimeout(function()
-        {
-            startCount(min, sec, i, timeOutRef);
-        }, 50);                                                              // Note: 1000!
-};
+            if(this.sec == 0 && this.min > 0)
+                {
+                    this.sec = 60;
+                    --this.min;                                                                             
+                };     
+            this.secCount(min, sec, i);
+        };
 
-function pauseCount(timeOutRef)
-{
-    clearTimeout(timeOutRef);
-};     
+    this.secCount = function(min, sec, i)
+        {               this.min = min;
+            this.sec = sec;
+            this.timeOutRef = setTimeout(
+                --this.sec
+            , 1000);
+            console.log(this.min + ":" + this.sec + "/" + i + "/" + this.timeOutRef);
 
-function resetCount(timeOutRef)
-{
-    document.querySelector("#minutes"+i).value = "00";
-    document.querySelector("#seconds"+i).value = "00";
-    clearTimeout(timeOutRef);
+        }      
+
+
+                                /*             this.minutes = document.querySelector("#minutes"+i);  
+                                            this.seconds = document.querySelector("#seconds"+i);
+                                    
+                                            this.minutes.value = min;
+                                            this.seconds.value = sec;      */
 };
