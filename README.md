@@ -1,3 +1,3 @@
-# Encryptor
+# MultiTimer
 
 Author: Grzegorz Dryja
