@@ -211,6 +211,7 @@ function Timer(i)
 
         this.countSeconds = function()
             {            
+                --this.sec.value
                 this.timeOut = setTimeout(function()
                     {
                         timers[i].seconds()                             //Can't put count() function here - it dosn't work
@@ -224,18 +225,18 @@ function Timer(i)
             }
 
         this.count = function()    
-            {   
-                if(this.sec.value == 0 && this.min.value > 0)
+            {                   
+                if(this.sec.value > 0)
+                {   
+                    this.countSeconds();                
+                }   
+                if(this.sec.value < 1 && this.min.value > 0)
                 {
                     this.sec.value = 60;
                     --this.min.value;
                     this.countSeconds();                                                                              
                 };              
 
-                if(this.sec.value > 0)
-                    {   
-                        --this.sec.value
-                        this.countSeconds();                
-                    }            
+         
             }
     };
