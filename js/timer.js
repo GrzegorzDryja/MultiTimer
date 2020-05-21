@@ -1,3 +1,5 @@
+"use strict"
+
 var i=0;                                                                //Unforutnetly global variable, timer count for add id
 var divs = [];
 var timers = [];                                                        //Here I put timer counting object
@@ -28,116 +30,117 @@ function TimerDiv(i){
         return document.createElement("input");
     }
 
-    var timerDiv = div();
-        timerDiv.className = "timer";
-        timerDiv.id = "timer"+i;
+        this.timerDiv = div();
+        this.timerDiv.className = "timer";
+        this.timerDiv.id = "timer"+i;
 
-    var nameDiv = div();
-        nameDiv.className = "main";
-        nameDiv.title = "Name it and click enter";
+        this.nameDiv = div();
+        this.nameDiv.className = "main";
+        this.nameDiv.title = "Name it and click enter";
 
-    var inputName = input();
-        inputName.type="text";
-        inputName.className="name";
-        inputName.id="nameInput"+i;
-        inputName.defaultValue="Name it here...";
-        inputName.maxLength="10";
+        this.inputName = input();
+        this.inputName.type="text";
+        this.inputName.className="name";
+        this.inputName.id="nameInput"+i;
+        this.inputName.defaultValue="Name it here...";
+        this.inputName.maxLength="10";
 
-    var counterDiv = div();
-        counterDiv.className = "main";
-        counterDiv.title = "Timer";
+        this.counterDiv = div();
+        this.counterDiv.className = "main";
+        this.counterDiv.title = "Timer";
 
-    var inputMinutes = input();
-        inputMinutes.type="text";
-        inputMinutes.className="name";
-        inputMinutes.id="minutes"+i;
-        inputMinutes.title="Minutes";
-        inputMinutes.maxLength="2";
-        inputMinutes.defaultValue="00";
-        inputMinutes.size="2";
-        inputMinutes.pattern="[0-9]{2}";
-        
-    var colonNode = document.createTextNode(":");    
-
-    var inputSeconds = input();
-        inputSeconds.type="text";
-        inputSeconds.className="name";
-        inputSeconds.id="seconds"+i;
-        inputSeconds.title="Seconds";
-        inputSeconds.maxLength="2";
-        inputSeconds.defaultValue ="00";
-        inputSeconds.size="2";
-        inputSeconds.pattern="[0-6.0-9]{2}";
-
-    var startButtonDiv = div();
-        startButtonDiv.className="main button";
-        startButtonDiv.id="startButtonDiv"+i;
-        startButtonDiv.title="Start";
-
-    var startButton = input();
-        startButton.type="button";
-        startButton.value="Start";
-        startButton.id="startButton"+i;
-
-    var pauseButtonDiv = div();
-        pauseButtonDiv.className="main button";
-        pauseButtonDiv.id="pauseButtonDiv"+i;
-        pauseButtonDiv.title="Pause";
-
-    var pauseButton = input();
-        pauseButton.type="button";
-        pauseButton.value="Stop";
-        pauseButton.id="pauseButton"+i;
-
-    var resetButtonDiv = div();
-        resetButtonDiv.className="main button";
-        resetButtonDiv.id="resetButton"+i;
-        resetButtonDiv.title="Reset";
-
-    var resetButton = input();
-        resetButton.type="button";
-        resetButton.value="Reset";
-        resetButton.id="resetButton"+i;
-
-    var addButtonDiv = div()
-        addButtonDiv.className="main button";
-        addButtonDiv.id="addButton"+i;
-        addButtonDiv.title="Add";
-
-    var addButton = input();
-        addButton.type="button";
-        addButton.value="Add";
-        addButton.id="addButton"+i;
+        this.inputMinutes = input();
+        this.inputMinutes.type="text";
+        this.inputMinutes.className="name";
+        this.inputMinutes.id="minutes"+i;
+        this.inputMinutes.title="Minutes";
+        this.inputMinutes.maxLength="2";
+        this.inputMinutes.defaultValue="00";
+        this.inputMinutes.size="2";
+        this.inputMinutes.pattern="[0-9]{2}";
             
-    var removeButtonDiv = div()
-        removeButtonDiv.className="main button";
-        removeButtonDiv.id="removeButton"+i;
-        removeButtonDiv.title="Remove";
+        this.colonNode = document.createTextNode(":");    
 
-    var removeButton = input();
-        removeButton.type="button";
-        removeButton.value="Remove";
-        removeButton.id="removeButton"+i;
+        this.inputSeconds = input();
+        this.inputSeconds.type="text";
+        this.inputSeconds.className="name";
+        this.inputSeconds.id="seconds"+i;
+        this.inputSeconds.title="Seconds";
+        this.inputSeconds.maxLength="2";
+        this.inputSeconds.defaultValue ="00";
+        this.inputSeconds.size="2";
+        this.inputSeconds.pattern="[0-6.0-9]{2}";
 
-    document.body.appendChild(timerDiv);
-    timerDiv.appendChild(nameDiv);
-    timerDiv.appendChild(nameDiv);
-    timerDiv.appendChild(counterDiv);
-    timerDiv.appendChild(startButtonDiv);
-    timerDiv.appendChild(pauseButtonDiv);
-    timerDiv.appendChild(resetButtonDiv);
-    timerDiv.appendChild(addButtonDiv);
-    timerDiv.appendChild(removeButtonDiv);
-    nameDiv.appendChild(inputName);
-    counterDiv.appendChild(inputMinutes);
-    counterDiv.appendChild(colonNode);    
-    counterDiv.appendChild(inputSeconds);
-    startButtonDiv.appendChild(startButton);
-    pauseButtonDiv.appendChild(pauseButton);
-    resetButtonDiv.appendChild(resetButton);
-    addButtonDiv.appendChild(addButton);
-    removeButtonDiv.appendChild(removeButton);
-}
+        this.startButtonDiv = div();
+        this.startButtonDiv.className="main button";
+        this.startButtonDiv.id="startButtonDiv"+i;
+        this.startButtonDiv.title="Start";
+
+        this.startButton = input();
+        this.startButton.type="button";
+        this.startButton.value="Start";
+        this.startButton.id="startButton"+i;
+
+        this.pauseButtonDiv = div();
+        this.pauseButtonDiv.className="main button";
+        this.pauseButtonDiv.id="pauseButtonDiv"+i;
+        this.pauseButtonDiv.title="Pause";
+
+        this.pauseButton = input();
+        this.pauseButton.type="button";
+        this.pauseButton.value="Stop";
+        this.pauseButton.id="pauseButton"+i;
+
+        this.resetButtonDiv = div();
+        this.resetButtonDiv.className="main button";
+        this.resetButtonDiv.id="resetButton"+i;
+        this.resetButtonDiv.title="Reset";
+
+        this.resetButton = input();
+        this.resetButton.type="button";
+        this.resetButton.value="Reset";
+        this.resetButton.id="resetButton"+i;
+
+        this.addButtonDiv = div()
+        this.addButtonDiv.className="main button";
+        this.addButtonDiv.id="addButton"+i;
+        this.addButtonDiv.title="Add";
+
+        this.addButton = input();
+        this.addButton.type="button";
+        this.addButton.value="Add";
+        this.addButton.id="addButton"+i;
+                
+        this.removeButtonDiv = div()
+        this.removeButtonDiv.className="main button";
+        this.removeButtonDiv.id="removeButton"+i;
+        this.removeButtonDiv.title="Remove";
+
+        this.removeButton = input();
+        this.removeButton.type="button";
+        this.removeButton.value="Remove";
+        this.removeButton.id="removeButton"+i;
+
+        document.body.appendChild(this.timerDiv);
+        this.timerDiv.appendChild(this.nameDiv);
+        this.timerDiv.appendChild(this.nameDiv);
+        this.timerDiv.appendChild(this.counterDiv);
+        this.timerDiv.appendChild(this.startButtonDiv);
+        this.timerDiv.appendChild(this.pauseButtonDiv);
+        this.timerDiv.appendChild(this.resetButtonDiv);
+        this.timerDiv.appendChild(this.addButtonDiv);
+        this.timerDiv.appendChild(this.removeButtonDiv);
+        this.nameDiv.appendChild(this.inputName);
+        this.counterDiv.appendChild(this.inputMinutes);
+        this.counterDiv.appendChild(this.colonNode);    
+        this.counterDiv.appendChild(this.inputSeconds);
+        this.startButtonDiv.appendChild(this.startButton);
+        this.pauseButtonDiv.appendChild(this.pauseButton);
+        this.resetButtonDiv.appendChild(this.resetButton);
+        this.addButtonDiv.appendChild(this.addButton);
+        this.removeButtonDiv.appendChild(this.removeButton);
+    }
+
 function Timer(i)
     {        
         this.name = document.querySelector("#nameInput"+i);
