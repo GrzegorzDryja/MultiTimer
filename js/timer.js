@@ -1,8 +1,10 @@
 "use strict"
 
-var i=0;                                                                //Unforutnetly global variable, timer count for add id
-var divs = [];
-var timers = [];                                                        //Here I put timer counting object
+//Unforutnetly global variable, timer count for add id
+let divs = [];
+let timers = [];                                                        //Here I put timer counting object
+let i = 0;
+let names = [];
 
 window.onload = function()
     {
@@ -156,8 +158,9 @@ function Timer(i)
         this.name.addEventListener("click", function()
             {   
                 this.oldName = document.querySelector("#nameInput"+i);
+                names[i].push(this.oldName.value);
                 this.oldName.value = "";                                                //Remember that cleans data
-                console.log("clean name "+i)          
+                console.log(names[i]);          
             });
 
         this.name.addEventListener("keypress", function(e)
@@ -235,8 +238,7 @@ function Timer(i)
                     this.sec.value = 60;
                     --this.min.value;
                     this.countSeconds();                                                                              
-                };              
-
-         
+                };
             }
     };
+    
