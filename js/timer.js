@@ -21,7 +21,7 @@ function removeTimer(i)
     {
         var removeElement = document.querySelector("#timer"+i);
             removeElement.parentNode.removeChild(removeElement);
-    }
+    }   
 
 function TimerDiv(i){    
 
@@ -44,7 +44,8 @@ function TimerDiv(i){
         this.inputName.type="text";
         this.inputName.className="name";
         this.inputName.id="nameInput"+i;
-        this.inputName.defaultValue="Name it here...";
+        names[i]="Name it here...";
+        this.inputName.value=names[i];
         this.inputName.maxLength="10";
 
         this.counterDiv = div();
@@ -157,18 +158,19 @@ function Timer(i)
 
         this.name.addEventListener("click", function()
             {   
-                this.oldName = document.querySelector("#nameInput"+i);
-                names[i].push(this.oldName.value);
-                this.oldName.value = "";                                                //Remember that cleans data
-                console.log(names[i]);          
+                document.querySelector("#nameInput"+i).select();
+                //this.oldName.select();
+                //names[i] = this.oldName.value;
+                //this.oldName.value = "";                                                //Remember that cleans data        
             });
 
         this.name.addEventListener("keypress", function(e)
             {
                 if(e.key === 'Enter')
                 {                                                
-                this.name = document.querySelector("#nameInput"+i).value;
-                console.log(this.name+i)
+                    this.name = document.querySelector("#nameInput"+i).value;
+                    names[i] = this.name;
+                    console.log(names[i]);
                 }
             });
         
@@ -241,4 +243,3 @@ function Timer(i)
                 };
             }
     };
-    
