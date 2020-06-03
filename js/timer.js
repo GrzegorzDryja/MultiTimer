@@ -23,26 +23,17 @@ function newTimer(i)
 
 function removeTimer(i)
     {
-        console.log(timers.length);
-        console.log(divs.length);
+        let leftDivs = document.querySelectorAll("div.timer").length;
         let removeElement = document.querySelector("#timer"+i);
-            if(timers.length == 1){
+            if(leftDivs == 1){
                 let remove = prompt("Do you realy want to remove las timer? Y/y for confirm.");
                     if(remove == 'y' || remove == 'Y'){
                         removeElement.parentNode.removeChild(removeElement);
-                        delete divs[i];
-                        divs.splice(i, 1);
-                        delete timers[i];
-                        timers.splice(i, 1);
                         alert("I warned you!");
                         alert("Ok... Tap ctrl+q for new timer! ;)");  
                     };         
             }else{
                 removeElement.parentNode.removeChild(removeElement);
-                delete divs[i];
-                divs.splice(i, 1);
-                delete timers[i];
-                timers.splice(i, 1);
             }            
     }   
 
@@ -216,6 +207,7 @@ function Timer(i)
 
         this.remove.addEventListener("click", function()
             {
+                timers[i].stop();
                 removeTimer(i);
             });
         
@@ -227,7 +219,6 @@ function Timer(i)
         this.twoChars = function(n)
             {
                 this.n = n;
-                console.log(this.n);
                 return (this.n < 10 && this.n.length < 2 ? '0' : '') + this.n;
             }   
 
