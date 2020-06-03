@@ -159,19 +159,13 @@ function Timer(i)
         this.name.addEventListener("click", function()
             {   
                 document.querySelector("#nameInput"+i).select();
-                //this.oldName.select();
-                //names[i] = this.oldName.value;
-                //this.oldName.value = "";                                                //Remember that cleans data        
             });
 
-        this.name.addEventListener("keypress", function(e)
+        this.name.addEventListener("change", function(e)
             {
-                if(e.key === 'Enter')
-                {                                                
-                    this.name = document.querySelector("#nameInput"+i).value;
-                    names[i] = this.name;
-                    console.log(names[i]);
-                }
+                this.name = document.querySelector("#nameInput"+i).value;
+                names[i] = this.name;
+                console.log(names[i]);
             });
         
         this.start.addEventListener("click", function()
