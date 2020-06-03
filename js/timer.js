@@ -154,25 +154,23 @@ function Timer(i)
         this.reset = document.querySelector("#resetButton"+i);
         this.add = document.querySelector("#addButton"+i);
         this.remove = document.querySelector("#removeButton"+i);
-        this.timeOut = undefined;
+        this.timeOut;                                                                                   //It is undefined
 
         this.name.addEventListener("click", function()
             {   
                 document.querySelector("#nameInput"+i).select();
             });
 
-        this.name.addEventListener("change", function(e)
+        this.name.addEventListener("change", function()
             {
                 this.name = document.querySelector("#nameInput"+i).value;
-                names[i] = this.name;
-                console.log(names[i]);
             });
         
         this.start.addEventListener("click", function()
             {   
                 this.min = document.querySelector("#minutes"+i).value;
                 this.sec = document.querySelector("#seconds"+i).value;
-                timers[i].count();                                                   //Have to call count function via object
+                timers[i].count(this.min, this.sec);                                                   //Have to call count function via object
             });
 
         this.pause.addEventListener("click", function()
@@ -206,14 +204,23 @@ function Timer(i)
         this.stop = function()
             {
                 clearTimeout(this.timeOut);
-            }    
+            }
+
+        this.twoChars = function(n)
+            {
+                this.n = n;
+                console.log(this.n);
+                return (this.n < 10 && this.n.length < 2 ? '0' : '') + this.n;
+            }   
 
         this.countSeconds = function()
             {            
                 --this.sec.value
+                
+                this.sec.value = this.twoChars(this.sec.value);          
                 this.timeOut = setTimeout(function()
                     {
-                        timers[i].seconds()                             //Can't put count() function here - it dosn't work
+                        timers[i].seconds()                             //Can't put count() function here - it dosn't work, will work on to make it with some good pattern
                     }
                 , 1000);
             }
@@ -225,15 +232,22 @@ function Timer(i)
 
         this.count = function()    
             {                   
-                if(this.sec.value > 0)
-                {   
-                    this.countSeconds();                
-                }   
-                if(this.sec.value < 1 && this.min.value > 0)
-                {
-                    this.sec.value = 60;
-                    --this.min.value;
-                    this.countSeconds();                                                                              
-                };
+                if(this.sec.value == 0 && this.min.value > 0)
+                    {
+                        this.sec.value = 60;               
+                        --this.min.value;
+                        this.min.value = this.twoChars(this.min.value);                        
+                        this.countSeconds();                                                                                                      
+                    }
+                else if(this.sec.value > 0 && this.min.value > 0)
+                    {   
+                        this.min.value = this.twoChars(this.min.value); 
+                        this.countSeconds();                                               
+                    }
+                else if(this.sec.value > 0 && this.min.value == 0)
+                    {   
+                        this.min.value = this.twoChars(this.min.value);
+                        this.countSeconds();
+                    }
             }
     };
