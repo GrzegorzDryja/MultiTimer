@@ -10,6 +10,10 @@ window.onload = function()
     {
         newTimer(0);
     }
+document.addEventListener("keydown", (e) => {
+    if(e.keyCode == 81 && e.ctrlKey)
+        newTimer(i);
+});
 
 function newTimer(i)
     {
@@ -19,8 +23,27 @@ function newTimer(i)
 
 function removeTimer(i)
     {
-        var removeElement = document.querySelector("#timer"+i);
-            removeElement.parentNode.removeChild(removeElement);
+        console.log(timers.length);
+        console.log(divs.length);
+        let removeElement = document.querySelector("#timer"+i);
+            if(timers.length == 1){
+                let remove = prompt("Do you realy want to remove las timer? Y/y for confirm.");
+                    if(remove == 'y' || remove == 'Y'){
+                        removeElement.parentNode.removeChild(removeElement);
+                        delete divs[i];
+                        divs.splice(i, 1);
+                        delete timers[i];
+                        timers.splice(i, 1);
+                        alert("I warned you!");
+                        alert("Ok... Tap ctrl+q for new timer! ;)");  
+                    };         
+            }else{
+                removeElement.parentNode.removeChild(removeElement);
+                delete divs[i];
+                divs.splice(i, 1);
+                delete timers[i];
+                timers.splice(i, 1);
+            }            
     }   
 
 function TimerDiv(i){    
@@ -176,24 +199,19 @@ function Timer(i)
         this.pause.addEventListener("click", function()
             {   
                 timers[i].stop();
-                console.log("pause"+i);
             });
 
         this.reset.addEventListener("click", function()
             {            
                 document.querySelector("#minutes"+i).value = "00";
                 document.querySelector("#seconds"+i).value = "00";
-                timers[i].stop();
-                
+                timers[i].stop();                
             });
 
         this.add.addEventListener("click", function()
             {
-                newTimer(++i);
-                --i;
+                newTimer(timers.length);
                 this.add = document.querySelector("#addButton"+i);
-                this.add.style.visibility = "hidden";
-
             });
 
         this.remove.addEventListener("click", function()
