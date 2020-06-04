@@ -1,8 +1,6 @@
 "use strict"
 
 //Unforutnetly global variable, timer count for add id
-let divs = [];
-let timers = [];                                                        //Here I put timer counting object
 let i = 0;
 let names = [];
 
@@ -10,6 +8,7 @@ window.onload = function()
     {
         newTimer(0);
     }
+
 document.addEventListener("keydown", (e) => {
     if(e.keyCode == 81 && e.ctrlKey)
         newTimer(i);
@@ -17,6 +16,9 @@ document.addEventListener("keydown", (e) => {
 
 function newTimer(i)
     {
+        let divs = [];
+        let timers = [];    
+
         divs[i] = new TimerDiv(i);
         timers[i] = new Timer(i);
     }
@@ -144,8 +146,8 @@ class TimerDiv {
 class Timer {
     constructor(i) {
         this.name = document.querySelector("#nameInput" + i);
-        this.min = document.querySelector("#minutes" + i);
-        this.sec = document.querySelector("#seconds" + i);
+        this.minutes = document.querySelector("#minutes" + i);
+        this.seconds = document.querySelector("#seconds" + i);
         this.start = document.querySelector("#startButton" + i);
         this.pause = document.querySelector("#pauseButton" + i);
         this.reset = document.querySelector("#resetButton" + i);
@@ -158,20 +160,14 @@ class Timer {
         this.name.addEventListener("change", function () {
             this.name = document.querySelector("#nameInput" + i).value;
         });
-        this.start.addEventListener("click", function () {
+
+        this.start.addEventListener("click", () => {
             this.min = document.querySelector("#minutes" + i).value;
-            this.sec = document.querySelector("#seconds" + i).value;      
+            this.sec = document.querySelector("#seconds" + i).value;
+                
+                this.count(this.min, this.sec); //Thank you fat arrow, lambda stabilize the this keyword, without fat arrow I couldn't call count function             
+            });
 
-  //Skończyłem tu, mam dostęp do n, n.end nie widzi jako funkcji, muszę nad tym popracować
-            (async function (n) {
-                console.log(n + "start" + i);
-                n.end = timers[i].count(n.min, n.sec);
-                // timers[i].count(min, sec);
-                let value = await n.end();
-                console.log(value);
-            })(this);
-
-        });
         this.pause.addEventListener("click", function () {
             timers[i].stop();
         });
@@ -191,42 +187,39 @@ class Timer {
         this.stop = function () {
             clearTimeout(this.timeOut);
         };
+
         this.twoChars = function (n) {
             this.n = n;
             return (this.n < 10 && this.n.length < 2 ? '0' : '') + this.n;
         };
-        this.countSeconds = function () {
-            --this.sec.value;
-            this.sec.value = this.twoChars(this.sec.value);
-            this.timeOut = setTimeout(function () {
-                timers[i].seconds(); //Can't put count() function here - it dosn't work, will work on to make it with some good pattern
+        
+        this.countSeconds = () => {        
+            this.timeOut = setTimeout(() => {                
+                this.count(this.min, --this.sec); //Can't put count() function here - it dosn't work, will work on to make it with some good pattern - => :D
             }, 1000);
         };
-        this.seconds = function () {
-            timers[i].count();
-        };
-        this.count = function () {
-            if (this.sec.value == 0 && this.min.value > 0) {
-                this.sec.value = 60;
-                --this.min.value;
-                this.min.value = this.twoChars(this.min.value);
+
+        this.count = (min, sec) => {
+            this.min = this.twoChars(min);
+            this.sec = this.twoChars(sec);
+            this.seconds.value = this.twoChars(this.sec); //something is leaking that I have to use twoChars function here also
+            this.minutes.value = this.twoChars(this.min);      
+
+            if (this.sec == 0 && this.min > 0) {
+                this.sec = 60;
+                --this.min;
                 this.countSeconds();
             }
-            else if (this.sec.value > 0 && this.min.value > 0) {
-                this.min.value = this.twoChars(this.min.value);
+            else if (this.sec > 0 && this.min >= 0) {
                 this.countSeconds();
             }
-            else if (this.sec.value > 0 && this.min.value == 0) {
-                this.min.value = this.twoChars(this.min.value);
-                this.countSeconds();
-            }
-            else if (this.sec.value == 0 && this.min.value == 0) {
+            else if (this.sec == 0 && this.min == 0) {
                 return new Promise(resolve => {
                     setTimeout(() => {
                       resolve('resolved');
                     }, 0);
                 });
-            }        
+            }  
         }
     }
 }
