@@ -16,9 +16,9 @@ document.addEventListener("keydown", (e) => {
 
 function newTimer(i)
     {
-        let check0 = document.querySelector("#timer0");
+        let check0div = document.querySelector("#timer0");
 
-        if(!check0){
+        if(!check0div){
             timers[i] = {
                 div: new TimerDiv(i),
                 timer: new Timer(i)
@@ -46,11 +46,13 @@ function removeTimer(i)
                 let remove = prompt("Do you realy want to remove las timer? Y/y for confirm.");
                     if(remove == 'y' || remove == 'Y'){
                         removeElement.parentNode.removeChild(removeElement);
+                        timers.splice(i,1);
                         alert("I warned you!");
                         alert("Ok... Tap ctrl+q for new timer! ;)");  
                     };         
             }else{
                 removeElement.parentNode.removeChild(removeElement);
+                timers.splice(i,1);
             }            
     }   
 
@@ -65,19 +67,23 @@ class TimerDiv {
         this.timerDiv = div();
         this.timerDiv.className = "timer";
         this.timerDiv.id = "timer" + i;
+
         this.nameDiv = div();
         this.nameDiv.className = "main";
         this.nameDiv.title = "Name it and click enter";
+
         this.inputName = input();
         this.inputName.type = "text";
         this.inputName.className = "name";
         this.inputName.id = "nameInput" + i;
         names[i] = "Name it here...";
         this.inputName.value = names[i];
-        this.inputName.maxLength = "10";
+        this.inputName.maxLength = "20";
+
         this.counterDiv = div();
         this.counterDiv.className = "main";
         this.counterDiv.title = "Timer";
+
         this.inputMinutes = input();
         this.inputMinutes.type = "text";
         this.inputMinutes.className = "name";
@@ -87,7 +93,9 @@ class TimerDiv {
         this.inputMinutes.defaultValue = "00";
         this.inputMinutes.size = "2";
         this.inputMinutes.pattern = "[0-9]{2}";
+
         this.colonNode = document.createTextNode(":");
+
         this.inputSeconds = input();
         this.inputSeconds.type = "text";
         this.inputSeconds.className = "name";
@@ -97,6 +105,7 @@ class TimerDiv {
         this.inputSeconds.defaultValue = "00";
         this.inputSeconds.size = "2";
         this.inputSeconds.pattern = "[0-6.0-9]{2}";
+
         this.startButtonDiv = div();
         this.startButtonDiv.className = "main button";
         this.startButtonDiv.id = "startButtonDiv" + i;
@@ -105,6 +114,7 @@ class TimerDiv {
         this.startButton.type = "button";
         this.startButton.value = "Start";
         this.startButton.id = "startButton" + i;
+
         this.pauseButtonDiv = div();
         this.pauseButtonDiv.className = "main button";
         this.pauseButtonDiv.id = "pauseButtonDiv" + i;
@@ -113,6 +123,7 @@ class TimerDiv {
         this.pauseButton.type = "button";
         this.pauseButton.value = "Stop";
         this.pauseButton.id = "pauseButton" + i;
+
         this.resetButtonDiv = div();
         this.resetButtonDiv.className = "main button";
         this.resetButtonDiv.id = "resetButton" + i;
@@ -121,6 +132,7 @@ class TimerDiv {
         this.resetButton.type = "button";
         this.resetButton.value = "Reset";
         this.resetButton.id = "resetButton" + i;
+
         this.addButtonDiv = div();
         this.addButtonDiv.className = "main button";
         this.addButtonDiv.id = "addButton" + i;
@@ -129,6 +141,7 @@ class TimerDiv {
         this.addButton.type = "button";
         this.addButton.value = "Add";
         this.addButton.id = "addButton" + i;
+
         this.removeButtonDiv = div();
         this.removeButtonDiv.className = "main button";
         this.removeButtonDiv.id = "removeButton" + i;
@@ -137,7 +150,9 @@ class TimerDiv {
         this.removeButton.type = "button";
         this.removeButton.value = "Remove";
         this.removeButton.id = "removeButton" + i;
+
         document.body.appendChild(this.timerDiv);
+
         this.timerDiv.appendChild(this.nameDiv);
         this.timerDiv.appendChild(this.nameDiv);
         this.timerDiv.appendChild(this.counterDiv);
@@ -169,10 +184,11 @@ class Timer {
         this.add = document.querySelector("#addButton" + i);
         this.remove = document.querySelector("#removeButton" + i);
         this.timeOut; //It is undefined
-        this.name.addEventListener("click", function () {
+
+        this.name.addEventListener("click", () => {
             document.querySelector("#nameInput" + i).select();
-        });
-        this.name.addEventListener("change", function () {
+        });        
+        this.name.addEventListener("change", () => {
             this.name = document.querySelector("#nameInput" + i).value;
         });
 
@@ -180,30 +196,34 @@ class Timer {
             this.min = document.querySelector("#minutes" + i).value;
             this.sec = document.querySelector("#seconds" + i).value;
                 
-                this.count(this.min, this.sec); //Thank you fat arrow, lambda stabilize the this keyword, without fat arrow I couldn't call count function             
+                this.count(this.min, this.sec); //Thank you fat arrow, lambda stabilize the this keyword, without fat arrow I couldn't call count function
             });
 
         this.pause.addEventListener("click", () => {
             this.stop();
         });
+
         this.reset.addEventListener("click", () => {
             document.querySelector("#minutes" + i).value = "00";
             document.querySelector("#seconds" + i).value = "00";
             this.stop();
         });
-        this.add.addEventListener("click", function () {
+
+        this.add.addEventListener("click", () => {
             newTimer(i);
             this.add = document.querySelector("#addButton" + i);
         });
+
         this.remove.addEventListener("click", () => {
             this.stop();
             removeTimer(i);
         });
-        this.stop = function () {
+
+        this.stop = () => {
             clearTimeout(this.timeOut);
         };
 
-        this.twoChars = function (n) {
+        this.twoChars = (n) => {
             this.n = n;
             return (this.n < 10 && this.n.length < 2 ? '0' : '') + this.n;
         };
