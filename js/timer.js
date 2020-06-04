@@ -1,7 +1,7 @@
 "use strict"
 
-//Unforutnetly global variable, timer count for add id
-let i = 0;
+//Unforutnetly global tables --> to change
+let timers = []; //Issue removeing div timers don't clean timers table
 let names = [];
 
 window.onload = function()
@@ -16,11 +16,26 @@ document.addEventListener("keydown", (e) => {
 
 function newTimer(i)
     {
-        let divs = [];
-        let timers = [];    
+        let check0 = document.querySelector("#timer0");
 
-        divs[i] = new TimerDiv(i);
-        timers[i] = new Timer(i);
+        if(!check0){
+            timers[i] = {
+                div: new TimerDiv(i),
+                timer: new Timer(i)
+            }
+        }else if (i < timers.length){ 
+            i = timers.length;
+            timers[i] = {
+                div: new TimerDiv(i),
+                timer: new Timer(i)
+            }; 
+        }else{
+            i++
+            timers[i] = {
+                div: new TimerDiv(i),
+                timer: new Timer(i)
+            }
+        }
     }
 
 function removeTimer(i)
@@ -168,20 +183,20 @@ class Timer {
                 this.count(this.min, this.sec); //Thank you fat arrow, lambda stabilize the this keyword, without fat arrow I couldn't call count function             
             });
 
-        this.pause.addEventListener("click", function () {
-            timers[i].stop();
+        this.pause.addEventListener("click", () => {
+            this.stop();
         });
-        this.reset.addEventListener("click", function () {
+        this.reset.addEventListener("click", () => {
             document.querySelector("#minutes" + i).value = "00";
             document.querySelector("#seconds" + i).value = "00";
-            timers[i].stop();
+            this.stop();
         });
         this.add.addEventListener("click", function () {
-            newTimer(timers.length);
+            newTimer(i);
             this.add = document.querySelector("#addButton" + i);
         });
-        this.remove.addEventListener("click", function () {
-            timers[i].stop();
+        this.remove.addEventListener("click", () => {
+            this.stop();
             removeTimer(i);
         });
         this.stop = function () {
