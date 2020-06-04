@@ -1,7 +1,7 @@
 "use strict"
 
 //Unforutnetly global tables --> to change
-let timers = []; //Issue removeing div timers don't clean timers table
+let timers = []; //Issue removeing div timers don't clean all timers table
 let names = [];
 
 window.onload = function()
@@ -23,7 +23,7 @@ function newTimer(i)
                 div: new TimerDiv(i),
                 timer: new Timer(i)
             }
-        }else if (i < timers.length){ 
+        }else if (i < timers.length){ //something here or in remove function is wrong
             i = timers.length;
             timers[i] = {
                 div: new TimerDiv(i),
@@ -236,34 +236,39 @@ class Timer {
         };
 
         this.count = (min, sec) => {
-            this.min = this.twoChars(min);
-            this.sec = this.twoChars(sec);
-            this.seconds.value = this.twoChars(this.sec); //something is leaking that I have to use twoChars function here also
-            this.minutes.value = this.twoChars(this.min);      
+                this.min = this.twoChars(min);
+                this.sec = this.twoChars(sec);
+                this.seconds.value = this.twoChars(this.sec);
+                this.minutes.value = this.twoChars(this.min);      
 
-            if (this.sec == 0 && this.min > 0) {
-                this.sec = 60;
-                --this.min;
-                this.countSeconds();
-            }
-            else if (this.sec > 0 && this.min >= 0) {
-                this.countSeconds();
-            }
-            else if (this.sec == 0 && this.min == 0) {
-                return new Promise(resolve => {
-                    setTimeout(() => {
-                      resolve('resolved');
-                    }, 0);
-                });
-            }  
-        }
+                if (this.sec == 0 && this.min > 0) {
+                    this.sec = 60;
+                    --this.min;
+                    this.countSeconds();
+                }
+                else if (this.sec > 0 && this.min >= 0) {
+                    this.countSeconds();
+                }
+                else if (this.sec == 0 && this.min == 0){
+                    this.blink();
+                }
+                return true;
+            };
+        //Start all shortcut
         document.addEventListener("keydown", (e) => {
             this.min = document.querySelector("#minutes" + i).value;
             this.sec = document.querySelector("#seconds" + i).value;
             if(e.keyCode == 89 && e.ctrlKey){
                 this.count(this.min, this.sec)
-                }
+            }
         });
+
+        // document.addEventListener("keydown", (e) => {
+
+        //     if(e.keyCode == 89 && e.ctrlKey){
+        //         this.blink();
+        //         }
+        // });
         
         this.blink = () => {
             this.t = 5;
@@ -272,20 +277,21 @@ class Timer {
             this.green = () => this.greenDiv.classList.remove("blink");
 
             this.x = setInterval(() => {
-                    const p = Promise.resolve(
-                        this.y = setTimeout(() => {
-                            this.green(); //after 0.3s this is thone
-                        }, 300)                
-                    )
-                    .then(() => {                
-                        this.yellow();//this is done first
-                        return true; //It always have to return something
-                    });
+                Promise.resolve(
+                    this.yellow(),//this should by done first
+                )
+                .then(() => {
+                    this.y = setTimeout(() => { //Remember setTimeout return resolve promise
+                        this.green(); //after 0.3s this is done
+                    }, 300);
+                    return true; //then always have to return something
+                });
                 this.t--;
                 if(this.t == 0){
                     clearInterval(this.x);
                 }
-            }, 500); //This start function after 0.6s, not emidetly after calling function
+            }, 600); //This start function after 0.6s, not emidetly after calling function
+        return true;
         }    
     }     
 }
