@@ -175,6 +175,7 @@ class TimerDiv {
 
 class Timer {
     constructor(i) {
+        this.greenDiv = document.querySelector("#timer" + i);
         this.name = document.querySelector("#nameInput" + i);
         this.minutes = document.querySelector("#minutes" + i);
         this.seconds = document.querySelector("#seconds" + i);
@@ -256,5 +257,36 @@ class Timer {
                 });
             }  
         }
-    }
+        document.addEventListener("keydown", (e) => {
+            this.min = document.querySelector("#minutes" + i).value;
+            this.sec = document.querySelector("#seconds" + i).value;
+            if(e.keyCode == 89 && e.ctrlKey){
+                this.count(this.min, this.sec)
+                }
+        });
+        
+        this.blink = () => {
+            this.t = 5;
+            
+            this.yellow = () => this.greenDiv.classList.add("blink");
+            this.green = () => this.greenDiv.classList.remove("blink");
+
+            this.x = setInterval(() => {
+                    const p = Promise.resolve(
+                        this.y = setTimeout(() => {
+                            this.green(); //after 0.3s this is thone
+                        }, 300)                
+                    )
+                    .then(() => {                
+                        this.yellow();//this is done first
+                        return true; //It always have to return something
+                    });
+                this.t--;
+                if(this.t == 0){
+                    clearInterval(this.x);
+                }
+            }, 500); //This start function after 0.6s, not emidetly after calling function
+        }    
+    }     
 }
+
