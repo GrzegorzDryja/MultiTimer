@@ -11,7 +11,7 @@ window.onload = function()
 
 document.addEventListener("keydown", (e) => {
     if(e.keyCode == 81 && e.ctrlKey)
-        newTimer(i);
+        newTimer(0);
 });
 
 function newTimer(i)
