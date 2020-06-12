@@ -5,12 +5,14 @@
 .timer
 {
     background-color: #4ce600;
-    width: 600px;
+    display: inline-block;
+    /*width: 600px;*/
     height: 20px;
     padding: 10px;
     /*position: ;  Was fixed but this cover first one*/
     top: 50px; /* bottom */
     right: 15px;
+    text-align: center;
 }
 
 .blink
@@ -21,10 +23,9 @@
 .main
 {    
     float: left;
-    border-right: 1px solid green;
 }
 .button
 {
-    width: 50px;
+    width: 30px;
 }
 

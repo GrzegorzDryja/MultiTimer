@@ -110,45 +110,35 @@ class TimerDiv {
         this.startButtonDiv.className = "main button";
         this.startButtonDiv.id = "startButtonDiv" + i;
         this.startButtonDiv.title = "Start";
-        this.startButton = input();
-        this.startButton.type = "button";
-        this.startButton.value = "Start";
+        this.startButton = document.createTextNode("▶");
         this.startButton.id = "startButton" + i;
 
         this.pauseButtonDiv = div();
         this.pauseButtonDiv.className = "main button";
         this.pauseButtonDiv.id = "pauseButtonDiv" + i;
         this.pauseButtonDiv.title = "Pause";
-        this.pauseButton = input();
-        this.pauseButton.type = "button";
-        this.pauseButton.value = "Stop";
+        this.pauseButton = document.createTextNode("⏸");;
         this.pauseButton.id = "pauseButton" + i;
 
         this.resetButtonDiv = div();
         this.resetButtonDiv.className = "main button";
-        this.resetButtonDiv.id = "resetButton" + i;
+        this.resetButtonDiv.id = "resetButtonDiv" + i;
         this.resetButtonDiv.title = "Reset";
-        this.resetButton = input();
-        this.resetButton.type = "button";
-        this.resetButton.value = "Reset";
+        this.resetButton = document.createTextNode("🔁");
         this.resetButton.id = "resetButton" + i;
 
         this.addButtonDiv = div();
         this.addButtonDiv.className = "main button";
-        this.addButtonDiv.id = "addButton" + i;
+        this.addButtonDiv.id = "addButtonDiv" + i;
         this.addButtonDiv.title = "Add";
-        this.addButton = input();
-        this.addButton.type = "button";
-        this.addButton.value = "Add";
+        this.addButton = document.createTextNode("➕");
         this.addButton.id = "addButton" + i;
 
         this.removeButtonDiv = div();
         this.removeButtonDiv.className = "main button";
-        this.removeButtonDiv.id = "removeButton" + i;
+        this.removeButtonDiv.id = "removeButtonDiv" + i;
         this.removeButtonDiv.title = "Remove";
-        this.removeButton = input();
-        this.removeButton.type = "button";
-        this.removeButton.value = "Remove";
+        this.removeButton = document.createTextNode("➖");
         this.removeButton.id = "removeButton" + i;
 
         document.body.appendChild(this.timerDiv);
@@ -179,11 +169,11 @@ class Timer {
         this.name = document.querySelector("#nameInput" + i);
         this.minutes = document.querySelector("#minutes" + i);
         this.seconds = document.querySelector("#seconds" + i);
-        this.start = document.querySelector("#startButton" + i);
-        this.pause = document.querySelector("#pauseButton" + i);
-        this.reset = document.querySelector("#resetButton" + i);
-        this.add = document.querySelector("#addButton" + i);
-        this.remove = document.querySelector("#removeButton" + i);
+        this.start = document.querySelector("#startButtonDiv" + i);
+        this.pause = document.querySelector("#pauseButtonDiv" + i);
+        this.reset = document.querySelector("#resetButtonDiv" + i);
+        this.add = document.querySelector("#addButtonDiv" + i);
+        this.remove = document.querySelector("#removeButtonDiv" + i);
         this.timeOut; //It is undefined
 
         this.name.addEventListener("click", () => {
@@ -269,7 +259,7 @@ class Timer {
         //         this.blink();
         //         }
         // });
-        
+    
         this.blink = () => {
             this.t = 5;
             
@@ -293,6 +283,5 @@ class Timer {
             }, 600); //This start function after 0.6s, not emidetly after calling function
         return true;
         }    
-    }     
+    }
 }
-
