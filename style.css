@@ -2,29 +2,32 @@
     Author: Grzegorz Dryja
 */
 
-.timer
-{
+.timer{
     background-color: #4ce600;
-    width: 600px;
+    width: 400px;
     height: 20px;
-    padding: 10px;
+    padding: 4px;
     /*position: ;  Was fixed but this cover first one*/
     top: 50px; /* bottom */
     right: 15px;
 }
 
-.blink
-{
+.blink{
     background-color: #ffee00;
 }
 
-.main
-{    
+.main{    
     float: left;
-    border-right: 1px solid green;
 }
-.button
-{
-    width: 50px;
+
+.button{
+    width: 28px;
+    padding-left: 5px;
+}
+
+.name{
+    background-color: rgb(199, 250, 110);
+    border: none;
+    margin: 1px 2px;
 }
 

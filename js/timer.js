@@ -6,13 +6,13 @@ let names = [];
 
 window.onload = function()
     {
-        newTimer(0);
+        newTimer(timers.length);
     }
-
-document.addEventListener("keydown", (e) => {
-    if(e.keyCode == 81 && e.ctrlKey)
-        newTimer(0);
-});
+// //Shortcut with ctr+q for new first timer
+// document.addEventListener("keydown", (e) => {
+//     if(e.keyCode == 81 && e.ctrlKey)
+//         newTimer(timers.length);
+// });
 
 function newTimer(i)
     {
@@ -48,7 +48,7 @@ function removeTimer(i)
                         removeElement.parentNode.removeChild(removeElement);
                         timers.splice(i,1);
                         alert("I warned you!");
-                        alert("Ok... Tap ctrl+q for new timer! ;)");  
+                        alert("Ok... Now refresh page! ;)");  
                     };         
             }else{
                 removeElement.parentNode.removeChild(removeElement);
@@ -110,36 +110,36 @@ class TimerDiv {
         this.startButtonDiv.className = "main button";
         this.startButtonDiv.id = "startButtonDiv" + i;
         this.startButtonDiv.title = "Start";
-        this.startButton = document.createTextNode("▶");
-        this.startButton.id = "startButton" + i;
+        this.startButton = document.createElement("i");
+        this.startButton.className = "fas fa-play";
 
         this.pauseButtonDiv = div();
         this.pauseButtonDiv.className = "main button";
         this.pauseButtonDiv.id = "pauseButtonDiv" + i;
         this.pauseButtonDiv.title = "Pause";
-        this.pauseButton = document.createTextNode("⏸");;
-        this.pauseButton.id = "pauseButton" + i;
+        this.pauseButton = document.createElement("i");;
+        this.pauseButton.className = "fas fa-pause";
 
         this.resetButtonDiv = div();
         this.resetButtonDiv.className = "main button";
         this.resetButtonDiv.id = "resetButtonDiv" + i;
         this.resetButtonDiv.title = "Reset";
-        this.resetButton = document.createTextNode("🔁");
-        this.resetButton.id = "resetButton" + i;
+        this.resetButton = document.createElement("i");;
+        this.resetButton.className = "fas fa-redo-alt";
 
         this.addButtonDiv = div();
         this.addButtonDiv.className = "main button";
         this.addButtonDiv.id = "addButtonDiv" + i;
         this.addButtonDiv.title = "Add";
-        this.addButton = document.createTextNode("➕");
-        this.addButton.id = "addButton" + i;
+        this.addButton = document.createElement("i");;
+        this.addButton.className = "fas fa-plus";
 
         this.removeButtonDiv = div();
         this.removeButtonDiv.className = "main button";
         this.removeButtonDiv.id = "removeButtonDiv" + i;
         this.removeButtonDiv.title = "Remove";
-        this.removeButton = document.createTextNode("➖");
-        this.removeButton.id = "removeButton" + i;
+        this.removeButton = document.createElement("i");;
+        this.removeButton.className = "fas fa-minus";
 
         document.body.appendChild(this.timerDiv);
 
@@ -221,7 +221,7 @@ class Timer {
         
         this.countSeconds = () => {        
             this.timeOut = setTimeout(() => {                
-                this.count(this.min, --this.sec); //Can't put count() function here - it dosn't work, will work on to make it with some good pattern - => :D
+                this.count(this.min, --this.sec);
             }, 1000);
         };
 
@@ -244,7 +244,7 @@ class Timer {
                 }
                 return true;
             };
-        //Start all shortcut
+        //Start all shortcut for "y + ctrl"
         document.addEventListener("keydown", (e) => {
             this.min = document.querySelector("#minutes" + i).value;
             this.sec = document.querySelector("#seconds" + i).value;
@@ -253,25 +253,15 @@ class Timer {
             }
         });
 
-        // document.addEventListener("keydown", (e) => {
-
-        //     if(e.keyCode == 89 && e.ctrlKey){
-        //         this.blink();
-        //         }
-        // });
-    
-
         this.blink = () => {
-
-            debugger;
             this.yellow = () => this.greenDiv.classList.add("blink");
             this.green = () => this.greenDiv.classList.remove("blink");
 
-            for (let i = 0; i<10; i++){
-
-                setTimeout(() => {console.log(i + "yellow"); this.yellow()}, i*300);
-                if (i%2){
-                    setTimeout(() => {console.log(i + "green"); this.green()}, i*300);
+            for (let i = 0; i<10; i++){                
+                if (i%2 == 0){
+                    setTimeout(() => this.yellow(), i*300);                    
+                } else {
+                    setTimeout(() => this.green(), i*300);
                 }
             }
         }    
